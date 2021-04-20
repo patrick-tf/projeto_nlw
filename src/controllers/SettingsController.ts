@@ -15,6 +15,6 @@ class SettingsController {
     await settingsRepository.save(settings);
 
     return response.json(settings);
-  }
+  } 
 }
 export { SettingsController };

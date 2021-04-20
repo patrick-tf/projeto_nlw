@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table } from "typeorm";
+import { Column, MigrationInterface, QueryRunner, Table } from "typeorm";
 
 export class CreateSettings1618921653790 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -33,9 +33,58 @@ export class CreateSettings1618921653790 implements MigrationInterface {
         ],
       })
     );
+
+    await queryRunner.createTable(
+      new Table({
+        name: "users",
+        columns: [
+          {
+            name: "id",
+            type: "uuid",
+            isPrimary: true,
+          },
+          {
+            name: "email",
+            type: "varchar",
+            default: true,
+          },
+          {
+            name: "created_at",
+            type: "timestamp",
+            default: "now()",
+          },
+        ],
+      })
+    );
+
+    await queryRunner.createTable(
+      new Table({
+        name: "messages",
+        columns: [
+          {
+            name: "id",
+            type: "uuid",
+            isPrimary: true,
+          },
+          {
+            name:"admin_id",
+            type:"uuid",
+            default:true
+          },
+          {
+            name:"user_id",
+            type:"uuid",
+            
+          }
+        ],
+      })
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropTable("settings");
   }
 }
+
+// Comando para rodar
+// npm run typeorm migration:run
