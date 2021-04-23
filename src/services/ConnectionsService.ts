@@ -41,11 +41,21 @@ class ConnectionsService {
     return connections;
   }
 
-  async findBySocketId(socket_id: string) {
-    const connection = await this.connectionsRepository.findOne({
-      socket_id,
-    });
+  async findBySocketID(socket_id: string) {
+    const connection = this.connectionsRepository.findOne({ socket_id });
+
     return connection;
+  }
+
+  async updateAdminID(user_id: string, admin_id: string) {
+    await this.connectionsRepository
+      .createQueryBuilder()
+      .update(Connection)
+      .set({ admin_id })
+      .where("user_id = :user_id", {
+        user_id,
+      })
+      .execute();
   }
 }
 
