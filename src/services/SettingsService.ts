@@ -14,7 +14,6 @@ class SettingService {
     this.settingsRepository = getCustomRepository(SettingsRepository);
   }
   async create({ chat, username }: ISettingsCreate) {
-
     //Essa linha faz isso "userAlredyExists":
     // SELECT * FROM settings WHERE username = "username" LIMIT 1 ;
     const userAlredyExists = await this.settingsRepository.findOne({
@@ -32,6 +31,24 @@ class SettingService {
 
     await this.settingsRepository.save(settings);
     return settings;
+  }
+
+  async findByUsername(username: string) {
+    const settings = await this.settingsRepository.findOne({
+      username,
+    });
+    return settings;
+  }
+
+  async update(username: string, chat: boolean) {
+    await this.settingsRepository
+      .createQueryBuilder()
+      .update(Setting)
+      .set({ chat })
+      .where("username = :username", {
+        username,
+      })
+      .execute();
   }
 }
 
